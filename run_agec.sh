@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
-
 BUILD_DIR=../build
-cd "$HOME/test"
+cd "$1"
 
 echo "Step 1: produce and disassemble java jar files"
 echo "     1.1: comile java files"
@@ -18,13 +17,19 @@ echo "     1.5: disassemble jar"
 python2 "$AGEC_HOME/src/run_disasm.py" Classify.jar "$HOME/classlist.lst" -o "$HOME/disassembled"
 
 echo "Step 2: Generate ngram"
-python2 "$AGEC_HOME/src/gen_ngram.py" --asm-directory "$HOME/disassembled" > ngrams.txt
+python2 "$AGEC_HOME/src/gen_ngram.py" --asm-directory "$HOME/disassembled" > "$HOME/ngram.txt"
 
 echo "Step 3: Detect clones in ngram"
-python2 "$AGEC_HOME/src/det_clone.py" ./ngrams.txt > clone_index
+python2 "$AGEC_HOME/src/det_clone.py" "$HOME/ngram.txt" > "$HOME/clone_index.txt"
 
 echo "Step 4: Decode clones"
-python2 "$AGEC_HOME/src/tosl_clone.py" --asm-directory "$HOME/disassembled" ./clone_index > "$HOME/clones.txt"
+python2 "$AGEC_HOME/src/tosl_clone.py" --asm-directory "$HOME/disassembled" "$HOME/clone_index.txt" > "$HOME/clones.txt"
+
+echo "Step 5: Calculate clone metrics"
+python2 "$AGEC_HOME/src/exp_clone.py" --asm-directory "$HOME/disassembled" "$HOME/clone_index.txt" --loc-to-trace --add-metric-clat --add-metric-max-depth > "$HOME/exp_clones.txt"
 
 echo "=====Clones detected:====="
 cat "$HOME/clones.txt"
+
+echo "=====Clone metrics:====="
+cat "$HOME/exp_clones.txt"

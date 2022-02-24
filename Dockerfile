@@ -18,10 +18,13 @@ RUN rm -rf master.zip
 COPY test "$HOME/test"
 COPY run_agec.sh /
 
-RUN chmod +x /run_agec.sh && /run_agec.sh
-RUN diff -w "$HOME/clones.txt" "$HOME/test/expected.txt"
-RUN rm -rf "$HOME/clones.txt" "$HOME/test"
+RUN chmod +x /run_agec.sh && /run_agec.sh "$HOME/test"
+RUN diff -w "$HOME/clone_index.txt" "$HOME/test/expected_index.txt"
+RUN diff -w "$HOME/ngram.txt" "$HOME/test/expected_ngram.txt"
+RUN diff -w "$HOME/clones.txt" "$HOME/test/expected_linenum.txt"
+RUN diff -w "$HOME/exp_clones.txt" "$HOME/test/expected_cdt_index.txt"
+RUN rm -rf "$HOME/clones.txt" "$HOME/ngram.txt" "$HOME/clone_index.txt" "$HOME/exp_clones.txt" "$HOME/test"
 
 USER agec-user
 
-ENTRYPOINT [ "bash" ]
+ENTRYPOINT [ "/bin/bash", "/run_agec.sh" ]
