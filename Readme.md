@@ -1,11 +1,11 @@
 # Agec
 
-Note, that Agec is licensed under the [MIT License](https://github.com/tos-kamiya/agec/blob/master/agec-license).
+Agec is licensed under the [MIT License](https://github.com/tos-kamiya/agec/blob/master/agec-license).
 
 
 Run [Agec](https://github.com/tos-kamiya/agec) on a supplied folder.
-As Agec has to compile all java files in order to obtain a jar, it is up to you to ensure their compatibility (the docker container is build with openjdk-18).
-Only sources that can be compiled, can be analyzed.
+As Agec has to compile all java files in order to obtain a jar, it is up to you to ensure their compatibility (the docker container is built with openjdk-18).
+Only sources that can be compiled can be analyzed.
 
 **Build** using the [`makefile`](makefile).
 **Run** using the [run-script](run.sh) script, supply it with the project folder.
