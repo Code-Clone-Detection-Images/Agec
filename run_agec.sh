@@ -15,7 +15,6 @@ echo "     1.1: prepare all java files"
 # done
 
 echo "     1.2: compile java files"
-echo $(find -name "*.java")
 javac -d "$BUILD_DIR" $(find -name "*.java")
 # undocumented :/
 echo "     1.3: produce classlist"
@@ -49,3 +48,8 @@ cat "$HOME/clones.txt"
 
 echo "=====Clone metrics:====="
 cat "$HOME/exp_clones.txt"
+
+echo "=====Diagnostics:====="
+# Note: we do this re-run only because otherwise we are unable to reuse- the output
+# however, the diagnostics are important
+python2 "$AGEC_HOME/src/det_clone.py" "$HOME/ngram.txt" --diagnostic
